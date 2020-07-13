@@ -1,4 +1,4 @@
-package br.com.thaisrezendeb.pontointeligente.api.configs;
+package br.com.thaisrezendeb.pontointeligente.api.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;

@@ -13,6 +13,8 @@ import java.util.Optional;
 @Table(name = "funcionario")
 public class Funcionario implements Serializable {
 
+    private static final long serialVersionUID = 306411570471828345L;
+
     private Long id;
     private String nome;
     private String email;

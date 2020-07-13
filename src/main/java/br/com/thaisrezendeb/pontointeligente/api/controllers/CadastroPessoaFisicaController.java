@@ -36,7 +36,10 @@ public class CadastroPessoaFisicaController {
     private FuncionarioService funcionarioService;
 
     @PostMapping
-    public ResponseEntity<Response<CadastroPessoaFisicaDto>> cadastrar(@Valid @RequestBody CadastroPessoaFisicaDto cadastroPessoaFisicaDto, BindingResult result) throws NoSuchAlgorithmException {
+    public ResponseEntity<Response<CadastroPessoaFisicaDto>> cadastrar(
+            @Valid @RequestBody CadastroPessoaFisicaDto cadastroPessoaFisicaDto,
+            BindingResult result)
+            throws NoSuchAlgorithmException {
         log.info("Cadastrando PF {}", cadastroPessoaFisicaDto.toString());
 
         Response<CadastroPessoaFisicaDto> response = new Response<CadastroPessoaFisicaDto>();
@@ -69,8 +72,10 @@ public class CadastroPessoaFisicaController {
         if(!empresa.isPresent())
             result.addError(new ObjectError("empresa", "Empresa nao cadastrada"));
 
-        this.funcionarioService.buscarPorCpf(pfDto.getCpf()).ifPresent(func -> result.addError(new ObjectError("funcionario", "CPF ja existe")));
-        this.funcionarioService.buscarPorEmail(pfDto.getEmail()).ifPresent(func -> result.addError(new ObjectError("funcionario", "Email ja existe")));
+        this.funcionarioService.buscarPorCpf(pfDto.getCpf()).ifPresent(func ->
+                result.addError(new ObjectError("funcionario", "CPF ja existe")));
+        this.funcionarioService.buscarPorEmail(pfDto.getEmail()).ifPresent(func ->
+                result.addError(new ObjectError("funcionario", "Email ja existe")));
     }
 
     /**
@@ -80,16 +85,20 @@ public class CadastroPessoaFisicaController {
      * @return Funcionario
      * @throws NoSuchAlgorithmException
      */
-    private Funcionario converterDtoParaFuncionario(CadastroPessoaFisicaDto pfDto, BindingResult result) throws NoSuchAlgorithmException {
+    private Funcionario converterDtoParaFuncionario(CadastroPessoaFisicaDto pfDto, BindingResult result)
+            throws NoSuchAlgorithmException {
         Funcionario funcionario = new Funcionario();
         funcionario.setNome(pfDto.getNome());
         funcionario.setEmail(pfDto.getEmail());
         funcionario.setCpf(pfDto.getCpf());
         funcionario.setPerfil(PerfilEnum.ROLE_USUARIO);
         funcionario.setSenha(PasswordUtils.geraBCrypt(pfDto.getSenha()));
-        pfDto.getQtdHorasAlmoco().ifPresent(qtdHorasAlmoco -> funcionario.setQtdHorasAlmoco(Float.valueOf(qtdHorasAlmoco)));
-        pfDto.getQtdHorasTrabalhoDia().ifPresent(qtdHorasTrabalhoDia -> funcionario.setQtdHorasTrabalhoDia(Float.valueOf(qtdHorasTrabalhoDia)));
-        pfDto.getValorHora().ifPresent(valorHora -> funcionario.setValorHora(new BigDecimal(valorHora)));
+        pfDto.getQtdHorasAlmoco().ifPresent(qtdHorasAlmoco ->
+                funcionario.setQtdHorasAlmoco(Float.valueOf(qtdHorasAlmoco)));
+        pfDto.getQtdHorasTrabalhoDia().ifPresent(qtdHorasTrabalhoDia ->
+                funcionario.setQtdHorasTrabalhoDia(Float.valueOf(qtdHorasTrabalhoDia)));
+        pfDto.getValorHora().ifPresent(valorHora ->
+                funcionario.setValorHora(new BigDecimal(valorHora)));
 
         return funcionario;
     }
@@ -107,9 +116,12 @@ public class CadastroPessoaFisicaController {
         pfDto.setEmail(funcionario.getEmail());
         pfDto.setCpf(funcionario.getCpf());
         pfDto.setCnpj(funcionario.getEmpresa().getCnpj());
-        funcionario.getQtdHorasAlmocoOpt().ifPresent(qtdHorasAlmoco -> pfDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
-        funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(qtdHorasTrabalhoDia -> pfDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabalhoDia))));
-        funcionario.getValorHoraOpt().ifPresent(valorHora -> pfDto.setValorHora(Optional.of(valorHora.toString())));
+        funcionario.getQtdHorasAlmocoOpt().ifPresent(qtdHorasAlmoco ->
+                pfDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
+        funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(qtdHorasTrabalhoDia ->
+                pfDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabalhoDia))));
+        funcionario.getValorHoraOpt().ifPresent(valorHora ->
+                pfDto.setValorHora(Optional.of(valorHora.toString())));
 
         return pfDto;
     }

@@ -38,14 +38,20 @@ public class FuncionarioController {
      * @throws NoSuchAlgorithmException
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Response<FuncionarioDto>> atualizar(@PathVariable("id") Long id, @Valid @RequestBody FuncionarioDto funcionarioDto, BindingResult result) throws NoSuchAlgorithmException {
+    public ResponseEntity<Response<FuncionarioDto>> atualizar(
+            @PathVariable("id") Long id,
+            @Valid @RequestBody FuncionarioDto funcionarioDto,
+            BindingResult result)
+            throws NoSuchAlgorithmException {
+
         log.info("Atualizando funcionario: {}", funcionarioDto.toString());
 
         Response<FuncionarioDto> response = new Response<FuncionarioDto>();
 
         Optional<Funcionario> funcionario = this.funcionarioService.buscarPorId(id);
         if(!funcionario.isPresent())
-            result.addError(new ObjectError("funcionario", "Funcionario nao encontrado"));
+            result.addError(new ObjectError("funcionario",
+                    "Funcionario nao encontrado"));
 
         this.atualizaDadosFuncionario(funcionario.get(), funcionarioDto, result);
 
@@ -68,19 +74,27 @@ public class FuncionarioController {
      * @param result
      * @throws NoSuchAlgorithmException
      */
-    private void atualizaDadosFuncionario(Funcionario funcionario, FuncionarioDto funcionarioDto, BindingResult result) throws NoSuchAlgorithmException {
+    private void atualizaDadosFuncionario(Funcionario funcionario, FuncionarioDto funcionarioDto,
+                                          BindingResult result)
+            throws NoSuchAlgorithmException {
+
         funcionario.setNome(funcionarioDto.getNome());
+
         if(!funcionario.getEmail().equals(funcionarioDto.getEmail())) {
-            this.funcionarioService.buscarPorEmail(funcionarioDto.getEmail()).ifPresent(func -> result.addError(new ObjectError("email", "Email ja existe")));
+            this.funcionarioService.buscarPorEmail(funcionarioDto.getEmail()).ifPresent(func ->
+                    result.addError(new ObjectError("email", "Email ja existe")));
             funcionario.setEmail(funcionarioDto.getEmail());
         }
 
         funcionario.setQtdHorasAlmoco(null);
-        funcionarioDto.getQtdHorasAlmoco().ifPresent(qtdHorasAlmoco -> funcionario.setQtdHorasAlmoco(Float.valueOf(qtdHorasAlmoco)));
+        funcionarioDto.getQtdHorasAlmoco().ifPresent(qtdHorasAlmoco ->
+                funcionario.setQtdHorasAlmoco(Float.valueOf(qtdHorasAlmoco)));
         funcionario.setQtdHorasTrabalhoDia(null);
-        funcionarioDto.getQtdHorasTrabalhoDia().ifPresent(qtdHorasTrabalhoDia -> funcionario.setQtdHorasTrabalhoDia(Float.valueOf(qtdHorasTrabalhoDia)));
+        funcionarioDto.getQtdHorasTrabalhoDia().ifPresent(qtdHorasTrabalhoDia ->
+                funcionario.setQtdHorasTrabalhoDia(Float.valueOf(qtdHorasTrabalhoDia)));
         funcionario.setValorHora(null);
-        funcionarioDto.getValorHora().ifPresent(valorHora -> funcionario.setValorHora(new BigDecimal(valorHora)));
+        funcionarioDto.getValorHora().ifPresent(valorHora ->
+                funcionario.setValorHora(new BigDecimal(valorHora)));
 
         if(funcionarioDto.getSenha().isPresent()) {
             funcionario.setSenha(PasswordUtils.geraBCrypt(funcionarioDto.getSenha().get()));
@@ -98,9 +112,12 @@ public class FuncionarioController {
         funcionarioDto.setId(funcionario.getId());
         funcionarioDto.setEmail(funcionario.getEmail());
         funcionarioDto.setNome(funcionario.getNome());
-        funcionario.getQtdHorasAlmocoOpt().ifPresent(qtdHorasAlmoco -> funcionarioDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
-        funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(qtdHorasTrabalhodia -> funcionarioDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabalhodia))));
-        funcionario.getValorHoraOpt().ifPresent(valorHora -> funcionarioDto.setValorHora(Optional.of(valorHora.toString())));
+        funcionario.getQtdHorasAlmocoOpt().ifPresent(qtdHorasAlmoco ->
+                funcionarioDto.setQtdHorasAlmoco(Optional.of(Float.toString(qtdHorasAlmoco))));
+        funcionario.getQtdHorasTrabalhoDiaOpt().ifPresent(qtdHorasTrabalhodia ->
+                funcionarioDto.setQtdHorasTrabalhoDia(Optional.of(Float.toString(qtdHorasTrabalhodia))));
+        funcionario.getValorHoraOpt().ifPresent(valorHora ->
+                funcionarioDto.setValorHora(Optional.of(valorHora.toString())));
         return funcionarioDto;
     }
 }

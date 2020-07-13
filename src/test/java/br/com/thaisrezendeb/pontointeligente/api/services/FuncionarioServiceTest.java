@@ -26,10 +26,14 @@ public class FuncionarioServiceTest {
 
     @BeforeEach
     public void setup() throws Exception {
-        BDDMockito.given(this.funcionarioRepository.save(Mockito.any(Funcionario.class))).willReturn(new Funcionario());
-        BDDMockito.given(this.funcionarioRepository.findById(Mockito.anyLong())).willReturn(Optional.ofNullable(new Funcionario()));
-        BDDMockito.given(this.funcionarioRepository.findByEmail(Mockito.anyString())).willReturn(new Funcionario());
-        BDDMockito.given(this.funcionarioRepository.findByCpf(Mockito.anyString())).willReturn(new Funcionario());
+        BDDMockito.given(this.funcionarioRepository.save(Mockito.any(Funcionario.class)))
+                .willReturn(new Funcionario());
+        BDDMockito.given(this.funcionarioRepository.findById(Mockito.anyLong()))
+                .willReturn(Optional.ofNullable(new Funcionario()));
+        BDDMockito.given(this.funcionarioRepository.findByEmail(Mockito.anyString()))
+                .willReturn(new Funcionario());
+        BDDMockito.given(this.funcionarioRepository.findByCpf(Mockito.anyString()))
+                .willReturn(new Funcionario());
     }
 
     @Test

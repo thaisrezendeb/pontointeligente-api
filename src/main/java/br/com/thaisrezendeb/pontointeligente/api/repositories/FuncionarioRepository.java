@@ -4,7 +4,7 @@ import br.com.thaisrezendeb.pontointeligente.api.entities.Funcionario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true)
+@Transactional(readOnly = true) // Não faz lock no banco de dados
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
 
     Funcionario findByCpf(String cpf);

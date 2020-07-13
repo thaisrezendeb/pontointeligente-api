@@ -38,15 +38,28 @@ public class EmpresaControllerTest {
 
     @Test
     public void testBuscarEmpresasCnpjInvalido() throws Exception {
-        BDDMockito.given(this.empresaService.buscarPorCnpj(Mockito.anyString())).willReturn(Optional.empty());
-        mvc.perform(MockMvcRequestBuilders.get(BUSCAR_EMPRESA_CNPJ_URL + CNPJ).accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest()).andExpect(jsonPath("$.errors").value("Empresa nao encontrada para o CNPJ" + CNPJ));
+        BDDMockito.given(this.empresaService.buscarPorCnpj(Mockito.anyString()))
+                .willReturn(Optional.empty());
+
+        mvc.perform(MockMvcRequestBuilders.get(BUSCAR_EMPRESA_CNPJ_URL + CNPJ)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors")
+                        .value("Empresa nao encontrada para o CNPJ" + CNPJ));
     }
 
     @Test
     public void testBuscarEmpresaCnpjValido() throws Exception {
-        BDDMockito.given(this.empresaService.buscarPorCnpj(Mockito.anyString())).willReturn(Optional.of(this.obterDadosEmpresa()));
+        BDDMockito.given(this.empresaService.buscarPorCnpj(Mockito.anyString()))
+                .willReturn(Optional.of(this.obterDadosEmpresa()));
 
-        mvc.perform(MockMvcRequestBuilders.get(BUSCAR_EMPRESA_CNPJ_URL + CNPJ).accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.data.id").value(ID)).andExpect(jsonPath("$.data.razaoSocial", equalTo(RAZAO_SOCIAL))).andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ))).andExpect(jsonPath("$.errors").isEmpty());
+        mvc.perform(MockMvcRequestBuilders.get(BUSCAR_EMPRESA_CNPJ_URL + CNPJ)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.id").value(ID))
+                .andExpect(jsonPath("$.data.razaoSocial", equalTo(RAZAO_SOCIAL)))
+                .andExpect(jsonPath("$.data.cnpj", equalTo(CNPJ)))
+                .andExpect(jsonPath("$.errors").isEmpty());
     }
 
     private Empresa obterDadosEmpresa() {

@@ -41,7 +41,11 @@ public class CadastroPessoaJuridicaController {
      * @throws NoSuchAlgorithmException
      */
     @PostMapping
-    public ResponseEntity<Response<CadastroPessoaJuridicaDto>> cadastrar(@Valid @RequestBody CadastroPessoaJuridicaDto cadastroPessoaJuridicaDto, BindingResult result) throws NoSuchAlgorithmException {
+    public ResponseEntity<Response<CadastroPessoaJuridicaDto>> cadastrar(
+            @Valid @RequestBody CadastroPessoaJuridicaDto cadastroPessoaJuridicaDto,
+            BindingResult result)
+            throws NoSuchAlgorithmException {
+
         log.info("Cadastrando PJ: {}", cadastroPessoaJuridicaDto.toString());
 
         Response<CadastroPessoaJuridicaDto> response = new Response<CadastroPessoaJuridicaDto>();
@@ -71,10 +75,14 @@ public class CadastroPessoaJuridicaController {
      * @param cadastroPessoaJuridicaDto
      * @param result
      */
-    private void validarDadosExistentes(CadastroPessoaJuridicaDto cadastroPessoaJuridicaDto, BindingResult result) {
-        this.empresaService.buscarPorCnpj(cadastroPessoaJuridicaDto.getCnpj()).ifPresent(emp -> result.addError(new ObjectError("empresa", "Empresa ja existe")));
-        this.funcionarioService.buscarPorCpf(cadastroPessoaJuridicaDto.getCpf()).ifPresent(func -> result.addError(new ObjectError("funcionario", "CPF ja existe")));
-        this.funcionarioService.buscarPorEmail(cadastroPessoaJuridicaDto.getEmail()).ifPresent(func -> result.addError(new ObjectError("funcionario", "Email ja existe")));
+    private void validarDadosExistentes(CadastroPessoaJuridicaDto cadastroPessoaJuridicaDto,
+                                        BindingResult result) {
+        this.empresaService.buscarPorCnpj(cadastroPessoaJuridicaDto.getCnpj()).ifPresent(emp ->
+                result.addError(new ObjectError("empresa", "Empresa ja existe")));
+        this.funcionarioService.buscarPorCpf(cadastroPessoaJuridicaDto.getCpf()).ifPresent(func ->
+                result.addError(new ObjectError("funcionario", "CPF ja existe")));
+        this.funcionarioService.buscarPorEmail(cadastroPessoaJuridicaDto.getEmail()).ifPresent(func ->
+                result.addError(new ObjectError("funcionario", "Email ja existe")));
     }
 
     /**
@@ -97,7 +105,9 @@ public class CadastroPessoaJuridicaController {
      * @return Funcionario
      * @throws NoSuchAlgorithmException
      */
-    private Funcionario converterDtoParaFuncionario(CadastroPessoaJuridicaDto cadastroPessoaJuridicaDto, BindingResult result) throws NoSuchAlgorithmException {
+    private Funcionario converterDtoParaFuncionario(CadastroPessoaJuridicaDto cadastroPessoaJuridicaDto,
+                                                    BindingResult result)
+            throws NoSuchAlgorithmException {
         Funcionario funcionario = new Funcionario();
         funcionario.setNome(cadastroPessoaJuridicaDto.getNome());
         funcionario.setEmail(cadastroPessoaJuridicaDto.getEmail());
