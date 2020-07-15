@@ -1,6 +1,12 @@
 package br.com.thaisrezendeb.pontointeligente.api.security;
 
 import br.com.thaisrezendeb.pontointeligente.api.entities.Funcionario;
+import br.com.thaisrezendeb.pontointeligente.api.enums.PerfilEnum;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JwtUserFactory {
 
@@ -17,5 +23,15 @@ public class JwtUserFactory {
                 mapToGrantedAuthorities(funcionario.getPerfil()));
     }
 
-    private static 
+    /**
+     * Converte o perfil do usuario para o formato utilizado pelo Spring Security
+     *
+     * @param perfilEnum
+     * @return List<GrantedAuthority>
+     */
+    private static List<GrantedAuthority> mapToGrantedAuthorities(PerfilEnum perfilEnum) {
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority(perfilEnum.toString()));
+        return authorities;
+    }
 }

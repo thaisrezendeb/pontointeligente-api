@@ -89,14 +89,6 @@ public class JwtTokenUtil {
         return !expiredToken(token);
     }
 
-    private boolean expiredToken(String token) {
-        Date dataExpiracao = this.getExpirationDateFromToken(token);
-        if(dataExpiracao == null) {
-            return false;
-        }
-        return dataExpiracao.before(new Date());
-    }
-
     /**
      * Retorna um novo JWT Token baseado nos dados do usuario
      *
@@ -143,7 +135,7 @@ public class JwtTokenUtil {
      * @param token
      * @return boolean
      */
-    private boolean expiratedToken(String token) {
+    private boolean expiredToken(String token) {
         Date dataExpiracao = this.getExpirationDateFromToken(token);
         if(dataExpiracao == null) {
             return false;
@@ -163,5 +155,4 @@ public class JwtTokenUtil {
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
-
 }
